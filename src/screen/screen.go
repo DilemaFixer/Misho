@@ -72,8 +72,8 @@ func (s *Screen) Resize(height , width uint) {
 	
 	var needResizeHeight, needResizeWidth bool = false , false
 
-	s.Height , needResizeHeight = updateOrSendSignalAboutOutOfRange(s.heightCapacity , height)
-	s.Width , needResizeWidth = updateOrSendSignalAboutOutOfRange(s.widthCapacity , width)
+	s.Height , needResizeHeight = clampValue(s.heightCapacity , height)
+	s.Width , needResizeWidth = clampValue(s.widthCapacity , width)
 
 	if !needResizeHeight && !needResizeWidth {
 		return
@@ -113,7 +113,7 @@ func (s *Screen) Resize(height , width uint) {
 	s.heightCapacity = newHeight
 }
 
-func updateOrSendSignalAboutOutOfRange(capacity uint , newValue uint) (uint , bool){
+func clampValue(capacity uint , newValue uint) (uint , bool){
 	if capacity >= newValue {
 		return newValue , false
 	}
@@ -136,7 +136,7 @@ func validateRunesBeforeCopy(oldBuf, newBuf [][]rune){
 	oldBufLen := len(oldBuf) 
 	newBufLen := len(newBuf)
 	
-	if oldBufLen == 0 || newBufLen == 0{
+	if oldBufLen == 0 || newBufLen == 0 {
 		panic("Try copy buffer staff from old to new , but one of them is empty")
 	}
 
