@@ -2,6 +2,7 @@ package screen
 
 import (
     "fmt"
+	"os"
 )
 
 type Screen struct {
@@ -57,12 +58,14 @@ func (s *Screen) Get(x,y uint) (rune , bool) {
 }
 
 func (s *Screen) Display() {
+	os.Stdout.Sync()
 	for y := range s.Height {
 		for x := range s.Width {
 			fmt.Printf("%c", s.buffer[y][x])
 		}
 		fmt.Printf("%c" ,'\n')
 	}
+	os.Stdout.Sync()
 }
 
 func (s *Screen) Resize(height , width uint) {
